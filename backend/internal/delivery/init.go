@@ -18,4 +18,13 @@ type db interface {
 
 type DataDelivery struct {
 	db db
+
+	group string
+}
+
+func NewDataDelivery(db db, group string) *DataDelivery {
+	return &DataDelivery{
+		db:    db,
+		group: group,
+	}
 }

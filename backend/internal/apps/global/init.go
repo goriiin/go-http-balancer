@@ -1,4 +1,4 @@
-package app
+package global
 
 import "net/http"
 
@@ -11,10 +11,12 @@ type dataDelivery interface {
 
 type App struct {
 	dataDelivery dataDelivery
+	router       *http.ServeMux
 }
 
-func NewApp(dataDelivery dataDelivery) *App {
+func NewApp(dataDelivery dataDelivery, router *http.ServeMux) *App {
 	return &App{
 		dataDelivery: dataDelivery,
+		router:       router,
 	}
 }
