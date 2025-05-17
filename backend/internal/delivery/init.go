@@ -3,6 +3,7 @@ package delivery
 import (
 	"context"
 	"github.com/goriiin/go-http-balancer/backend/internal/domain"
+	"log/slog"
 )
 
 const ID = "id"
@@ -14,17 +15,14 @@ type db interface {
 	Update(ctx context.Context, id int, data domain.SomeData) error
 }
 
-// TODO: возвращать более корректные ошибки
-
 type DataDelivery struct {
-	db db
-
-	group string
+	log *slog.Logger
+	db  db
 }
 
-func NewDataDelivery(db db, group string) *DataDelivery {
+func NewDataDelivery(db db, log *slog.Logger) *DataDelivery {
 	return &DataDelivery{
-		db:    db,
-		group: group,
+		db:  db,
+		log: log,
 	}
 }

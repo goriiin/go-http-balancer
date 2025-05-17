@@ -1,0 +1,37 @@
+
+default:
+  graceful_shutdown_timeout: 10s
+  read_timeout: 5s
+  write_timeout: 10s
+  idle_timeout: 15s
+  logger:
+    level: dev
+  db:
+    host: pg_db
+    port: 54320
+    username_key: DB_USERNAME
+    password_key: DB_PASSWORD
+    name_key: DB_NAME
+    max_connections: 90
+    min_connections: 0
+    max_lifetime: 2h
+    max_idle: 30m
+
+group1:
+  read_timeout: 2s
+  logging_level: info
+
+
+
+#group1:
+#  graceful_shutdown_timeout: 10s
+#  read_timeout: 5s
+#  write_timeout: 10s
+#  IdleTimeout: 15s
+
+
+#group2:
+#  graceful_shutdown_timeout: 10s
+#  read_timeout: 5s
+#  write_timeout: 10s
+#  IdleTimeout: 15s

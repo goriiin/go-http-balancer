@@ -7,8 +7,7 @@ import (
 )
 
 type Response struct {
-	Status int         `json:"status"`
-	Body   interface{} `json:"body"`
+	Body interface{} `json:"body"`
 }
 
 type HTTPErrorResponse struct {
@@ -21,8 +20,7 @@ func WriteJSON(w http.ResponseWriter, status int, data interface{}) {
 
 	if data != nil {
 		response := Response{
-			Status: status,
-			Body:   data,
+			Body: data,
 		}
 
 		err := json.NewEncoder(w).Encode(response)
