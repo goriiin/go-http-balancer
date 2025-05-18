@@ -1,4 +1,4 @@
-# go-http-balancer
+# http balancer. Тестовое Cloud.ru
 
 
 ##  Вопросы для разогрева
