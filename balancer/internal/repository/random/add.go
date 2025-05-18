@@ -1,14 +1,11 @@
-package round_robin
+package random
 
-import (
-	"github.com/goriiin/go-http-balancer/balancer/internal/domain"
-)
+import "github.com/goriiin/go-http-balancer/balancer/internal/domain"
 
 func (p *Pool) Add(be *domain.Backend) {
 	if be == nil || be.URL == nil {
 		return
 	}
-
 	p.mu.Lock()
 	defer p.mu.Unlock()
 

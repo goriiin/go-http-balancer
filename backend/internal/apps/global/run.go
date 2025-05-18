@@ -3,6 +3,7 @@ package global
 import (
 	"errors"
 	"fmt"
+	"github.com/goriiin/go-http-balancer/pkg"
 	"log/slog"
 	"net/http"
 )
@@ -10,7 +11,15 @@ import (
 func (a *App) Run() <-chan error {
 	errChan := make(chan error, 1)
 
-	a.router.HandleFunc("/api/v1/data", a.crud)
+	a.router.HandleFunc("/api/v1/data/{id}", a.crud)
+
+	a.router.HandleFunc("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
+		pkg.WriteJSON(w, http.StatusOK, struct {
+			Answer string `json:"answer"`
+		}{"healthy"})
+
+		a.log.Debug("[ health ] health check OK!")
+	})
 
 	a.server = &http.Server{
 		Addr:         "0.0.0.0:8080",

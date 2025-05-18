@@ -18,18 +18,36 @@ services:
     networks:
       - backend
 
-  back1:
+  backend_group1_1:
     env_file:
       - .env
     build:
       context: .
       dockerfile: backend/cmd/group1/Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - pg_db
+    restart: unless-stopped
+    container_name: backend_group1_1
     networks:
       - backend
+
+  balancer:
+    build:
+      context: .
+      dockerfile: balancer/cmd/Dockerfile
+    ports:
+      - "8000:8080"
+    depends_on:
+      - backend_group1_1
+#      - backend_group1_2
+    volumes:
+       - ./balancer/configs/balancer.yaml:/app/configs/balancer.yaml
+    container_name: http_balancer
+    networks:
+      - backend
+    restart: unless-stopped
 
 volumes:
   pg_data:

@@ -1,8 +1,6 @@
-package round_robin
+package random
 
-import (
-	"github.com/goriiin/go-http-balancer/balancer/internal/domain"
-)
+import "github.com/goriiin/go-http-balancer/balancer/internal/domain"
 
 func (p *Pool) MarkUnhealthy(u *domain.Backend) {
 	if u == nil || u.URL == nil {

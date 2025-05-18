@@ -5,7 +5,7 @@ default:
   write_timeout: 10s
   idle_timeout: 15s
   logger:
-    level: dev
+    level: debug
   db:
     host: pg_db
     port: 54320

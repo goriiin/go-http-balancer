@@ -1,1 +1,25 @@
 
+balancer:
+  listen_addr: :8080
+  algorithm: round-robin #  least-connections / random
+  graceful_shutdown_timeout: 15s
+  backends:
+    - http://backend_group1_1:8080
+#    - http://backend_group1_2:808
+  logger:
+    level: debug # debug, info, warn, error
+  health_check:
+    path: /api/v1/health
+    period: 10s
+    timeout: 3s
+  circuit_breaker:
+    failure_threshold: 3
+    reset_timeout: 20s
+    half_open_requests: 1
+  rate_limiter:
+    default_capacity: 200
+    default_refill_rate_per_second: 20
+    client_id_header: ""
+    trust_x_forwarded_for: true
+    cleanup_interval: 5m
+    inactive_threshold: 30m

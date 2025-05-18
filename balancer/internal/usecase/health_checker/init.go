@@ -2,6 +2,8 @@ package health_checker
 
 import (
 	"github.com/goriiin/go-http-balancer/balancer/internal/domain"
+	"log/slog"
+	"net/http"
 	"time"
 )
 
@@ -11,15 +13,26 @@ type pool interface {
 	GetAll() []*domain.Backend
 }
 
-type HealthChecker struct {
-	Pool    pool
-	Path    string
+type Config struct {
+	Path    string //куда тыкаем для чека
 	Period  time.Duration
 	Timeout time.Duration
 }
 
-func NewHealthChecker(pool pool) *HealthChecker {
+type HealthChecker struct {
+	pool   pool
+	config Config
+	log    *slog.Logger
+	client *http.Client
+}
+
+func New(p pool, cfg Config, l *slog.Logger) *HealthChecker {
 	return &HealthChecker{
-		Pool: pool,
+		pool:   p,
+		config: cfg,
+		log:    l,
+		client: &http.Client{
+			Timeout: cfg.Timeout,
+		},
 	}
 }

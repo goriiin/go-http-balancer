@@ -2,15 +2,19 @@ package least_conns
 
 import (
 	"github.com/goriiin/go-http-balancer/balancer/internal/domain"
-	"sync/atomic"
 )
 
 func (p *Pool) Done(be *domain.Backend) {
-	atomic.AddInt32(&be.ConnsCount, -1)
-	p.mu.Lock()
-	if be.Index >= 0 {
-		p.healthy.Fix(be.Index)
+	if be == nil || be.URL == nil {
+		return
 	}
 
-	p.mu.Unlock()
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	be.DecrementConns()
+
+	if actualBe, ok := p.backendMap[be.URL.String()]; ok && actualBe.Index != -1 && actualBe.Index < p.healthy.Len() {
+		p.healthy.Fix(actualBe.Index)
+	}
 }

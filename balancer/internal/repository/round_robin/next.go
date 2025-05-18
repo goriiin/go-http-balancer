@@ -12,8 +12,8 @@ func (p *Pool) Next() *domain.Backend {
 		return nil
 	}
 
-	u := p.healthy[p.pos%len(p.healthy)]
+	be := p.healthy[p.pos%uint32(len(p.healthy))]
 	p.pos++
 
-	return u
+	return be
 }

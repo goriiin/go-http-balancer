@@ -1,6 +1,7 @@
 package breaker
 
 import (
+	"github.com/goriiin/go-http-balancer/balancer/configs"
 	"sync"
 	"time"
 )
@@ -14,7 +15,7 @@ const (
 )
 
 type Breaker struct {
-	cfg          Config
+	cfg          configs.BreakerConfig
 	mu           sync.Mutex
 	state        State
 	failures     int
@@ -22,6 +23,6 @@ type Breaker struct {
 	halfOpenLeft int
 }
 
-func NewBreaker(cfg Config) *Breaker {
+func NewBreaker(cfg configs.BreakerConfig) *Breaker {
 	return &Breaker{cfg: cfg, state: Closed}
 }

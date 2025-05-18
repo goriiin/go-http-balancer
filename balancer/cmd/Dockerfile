@@ -1,25 +1,25 @@
 FROM golang:1.23.1-alpine3.20 AS build
 
-WORKDIR /var/backend
+WORKDIR /var/back
 
-COPY cmd/main.go main.go
+COPY go.mod go.sum ./
+RUN go mod download
+
 COPY . .
 
 RUN go mod tidy
-RUN go build -o main main.go
+
+RUN go build -o main ./balancer/cmd/main.go
 
 FROM alpine:edge as prod
 
-RUN apk add bash
-
-COPY --from=build /var/backend/main /app/main
-COPY --from=build /var/backend/.env /app/.env
-
-
-RUN mkdir -p /app/internal/configs
-COPY configs app/configs
+RUN apk add --no-cache bash
 
 WORKDIR /app
-EXPOSE 8080
 
-ENTRYPOINT ./main
+COPY --from=build /var/back/main .
+COPY --from=build /var/back/.env .
+COPY --from=build /var/back/backend/configs ./configs
+
+EXPOSE 8080
+ENTRYPOINT ["./main"]
